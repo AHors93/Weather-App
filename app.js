@@ -5,6 +5,8 @@ window.addEventListener("load", () => {
   let temperatureDegree = document.querySelector('.temperature-degree')
   let locationCountry = document.querySelector('.location-country')
   let locationIcon = document.querySelector('.weather-icon')
+  const temperatureSection = document.querySelector('.temperature')
+  const temperatureSpan = document.querySelector('.temperature span')
 
 
 
@@ -19,19 +21,34 @@ window.addEventListener("load", () => {
           return response.json();
         })
         .then((data) => {
+          console.log(data)
           const {temp} = data.main;
           const {description} = data.weather[0];
           const {country} = data.sys;
           const icon = data.weather[0].icon
 
-        /** 
-         * TODO - convert Kelvins into Celsuis or Fahrenheit 
-         */
-
         temperatureDegree.textContent = temp; 
         temperatureDescription.textContent = description;
         locationCountry.textContent = country;
         locationIcon.innerHTML = `<img src="icons/${icon}"></img>;`
+
+        /**
+         * Formula for Celsius
+         */
+        let celsius = (temp - 273.15)
+
+        /**
+         * Convert temperature to Celsius 
+        */  
+       temperatureSection.addEventListener('click', () => {
+         if (temperatureSpan.textContent === 'K') {
+           temperatureSpan.textContent = 'C';
+           temperatureDegree.textContent = Math.floor(celsius)
+         } else {
+          temperatureSpan.textContent = 'K';
+          temperatureDegree.textContent = temp;
+         }
+       })
 
         });
     });
